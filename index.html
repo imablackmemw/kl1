@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaeLauncher | Скачать</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #00d2ff; --secondary: #3a7bd5; --bg: #0f0c29; }
+        body {
+            margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            height: 100vh; display: flex; justify-content: center; align-items: center; color: white; overflow: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+            padding: 50px; text-align: center; width: 90%; max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3); animation: fadeIn 1s ease-out;
+        }
+        h1 { font-size: 2.5em; margin-bottom: 10px; background: linear-gradient(to right, #00d2ff, #91eaff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { color: #ccc; margin-bottom: 30px; }
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 18px 35px; background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white; text-decoration: none; border-radius: 12px; font-weight: bold;
+            font-size: 1.1em; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0, 210, 255, 0.3);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 210, 255, 0.5); filter: brightness(1.1); }
+        .os-badge { margin-top: 20px; font-size: 0.8em; opacity: 0.6; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="glass-card" id="main-card">
+    <i class="fas fa-rocket" style="font-size: 3em; color: var(--primary); margin-bottom: 20px;"></i>
+    <h1>KaeLauncher</h1>
+    <p>Мощный. Быстрый. Твой.</p>
+    
+    <a href="#" id="download-link" class="btn">
+        <i id="os-icon" class="fas fa-download"></i>
+        <span id="btn-text">Определяем ОС...</span>
+    </a>
+
+    <div class="os-badge">
+        <span id="os-detected">Сканирование системы...</span>
+    </div>
+</div>
+
+<script>
+    const btnText = document.getElementById('btn-text');
+    const osDetected = document.getElementById('os-detected');
+    const osIcon = document.getElementById('os-icon');
+    const downloadLink = document.getElementById('download-link');
+    const card = document.getElementById('main-card');
+
+    let fileUrl = "";
+
+    // Логика определения ОС
+    const ua = window.navigator.userAgent.toLowerCase();
+    if (ua.indexOf("win") !== -1) {
+        fileUrl = "KaeLauncher_Install_v12.5.exe";
+        btnText.innerText = "Скачать для Windows";
+        osDetected.innerHTML = '<i class="fab fa-windows"></i> Рекомендуется для вашей Windows';
+        osIcon.className = "fab fa-windows";
+    } else if (ua.indexOf("linux") !== -1) {
+        fileUrl = "KaeLauncher_Linux.tar.gz"; // Замени на свое имя файла для Linux
+        btnText.innerText = "Скачать для Linux";
+        osDetected.innerHTML = '<i class="fab fa-linux"></i> Рекомендуется для вашей Linux';
+        osIcon.className = "fab fa-linux";
+    } else {
+        fileUrl = "#";
+        btnText.innerText = "Платформа не поддерживается";
+        osDetected.innerText = "Доступно только для Win/Linux";
+    }
+
+    downloadLink.onclick = (e) => {
+        if(fileUrl === "#") return;
+        
+        // Магия скачивания
+        const a = document.createElement('a');
+        a.href = fileUrl;
+        a.download = fileUrl;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Красивый финал
+        card.innerHTML = `
+            <i class="fas fa-check-circle" style="font-size: 4em; color: #00ff88; margin-bottom: 20px;"></i>
+            <h1 style="background: #00ff88; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Загрузка пошла!</h1>
+            <p>Установите файл и начинайте играть.</p>
+            <p style="font-size: 0.8em; opacity: 0.5;">Эту вкладку можно закрыть.</p>
+        `;
+    };
+</script>
+
+</body>
+</html>
