@@ -4,105 +4,341 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KaeLauncher | Официальный сайт</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; --success: #00ff88; }
-        body {
-            margin: 0; font-family: 'Segoe UI', Roboto, sans-serif;
-            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
-            min-height: 100vh; display: flex; justify-content: center; align-items: center; color: white; overflow: hidden;
+        /* --- Основные переменные и сброс стилей --- */
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --success: #00ff88;
+            --bg-dark: #090a0f;
+            --text-main: #ffffff;
+            --text-muted: #8b9bb4;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
-        .card {
-            background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px;
-            padding: 40px; text-align: center; width: 90%; max-width: 400px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.5); z-index: 10;
-        }
-        h1 { font-size: 2.5em; margin: 0; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .version { font-size: 0.9em; color: var(--primary); font-weight: bold; margin-bottom: 25px; display: block; }
-        
-        .btn-container { display: flex; flex-direction: column; gap: 15px; }
-        
-        .btn {
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            padding: 16px; background: rgba(255,255,255,0.05); color: white;
-            text-decoration: none; border-radius: 15px; font-weight: 600;
-            transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .btn.recommended {
-            background: white; color: black; font-weight: 800; transform: scale(1.05);
-            border: none; box-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
-        }
-        
-        .btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
-        .btn.recommended:hover { background: #eee; transform: scale(1.07); }
 
-        .rec-tag { font-size: 0.7em; background: #000; color: #fff; padding: 2px 8px; border-radius: 5px; margin-left: 8px; }
-        
-        .info { margin-top: 25px; font-size: 0.8em; color: #666; }
-        .done-icon { font-size: 5em; color: var(--success); margin-bottom: 20px; }
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Скрываем полосы прокрутки для фона */
+            position: relative;
+        }
+
+        /* --- Анимированный фон (Живой Градиент) --- */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+            background-size: 200% 200%;
+            animation: gradientMove 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Карточка (Glassmorphism) --- */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardAppear 0.6s ease forwards;
+        }
+
+        @keyframes cardAppear {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Типографика --- */
+        h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            margin: 10px 0 5px 0;
+            background: linear-gradient(135deg, #fff 30%, #a2b1c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .version {
+            font-size: 0.95em;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 35px;
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(0, 210, 255, 0.1);
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Кнопки (современный стиль) --- */
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Эффект блика при наведении */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        /* Обычная кнопка: Ховер */
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Рекомендуемая кнопка (Акцентная) */
+        .btn.recommended {
+            background: var(--text-main);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            transform: scale(1.02);
+        }
+
+        .btn.recommended:hover {
+            background: #f0f0f0;
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 210, 255, 0.3);
+        }
+
+        .btn i {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .rec-tag {
+            font-size: 0.7em;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 3px 9px;
+            border-radius: 6px;
+            margin-left: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* --- Инфо-панель --- */
+        .info {
+            margin-top: 30px;
+            font-size: 0.85em;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        /* --- Экран Успеха (Шаг 2) --- */
+        #step-2 {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .done-icon {
+            font-size: 5.5em;
+            color: var(--success);
+            margin-bottom: 25px;
+            display: inline-block;
+            animation: iconPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+
+        @keyframes iconPop {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .success-title {
+            color: var(--success);
+            margin: 0;
+            font-size: 2em;
+            font-weight: 800;
+        }
+
+        #linux-tip {
+            display: none;
+            margin-top: 20px;
+            font-size: 0.95em;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        code {
+            background: #111;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: var(--primary);
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1.1em;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .back-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            border-color: #555;
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
     </style>
 </head>
 <body>
 
-<div class="card" id="main-card">
-    <div id="step-1">
-        <i class="fas fa-rocket" style="font-size: 3em; margin-bottom: 20px; color: var(--primary);"></i>
-        <h1>KaeLauncher</h1>
-        <span class="version">v12.5 Stable</span>
-        
-        <div class="btn-container">
-            <!-- Кнопка Windows -->
-            <a href="https://github.com/imablackmemw/kl1/releases/download/v12.5/KaeLauncher_Install_v12.5.exe" 
-               id="win-btn" class="btn" onclick="showSuccess()">
-                <i class="fab fa-windows"></i>
-                <span>Windows <small id="win-rec" style="display:none;" class="rec-tag">Рекомендуем</small></span>
-            </a>
+    <div class="card" id="main-card">
+        <div id="step-1">
+            <i class="fas fa-rocket" style="font-size: 3.5em; color: var(--primary); margin-bottom: 15px;"></i>
+            <h1>KaeLauncher</h1>
+            <span class="version">v12.5 Stable</span>
+            
+            <div class="btn-container">
+                <a href="https://github.com/imablackmemw/kl1/releases/download/v12.5/KaeLauncher_Install_v12.5.exe" 
+                   id="win-btn" class="btn" onclick="showSuccess('win')">
+                    <i class="fab fa-windows"></i>
+                    <span>Windows <small id="win-rec" style="display:none;" class="rec-tag">Recommended</small></span>
+                </a>
 
-            <!-- Кнопка Linux -->
-            <a href="https://github.com/imablackmemw/kl1/releases/download/Linux/setup.sh" 
-               id="win-btn" class="btn" onclick="showSuccess()">
-                <i class="fab fa-linux"></i>
-                <span>Linux <small id="linux-rec" style="display:none;" class="rec-tag">Рекомендуем</small></span>
-            </a>
+                <a href="https://github.com/imablackmemw/kl1/releases/download/Linux/setup.sh" 
+                   id="linux-btn" class="btn" onclick="showSuccess('linux')">
+                    <i class="fab fa-linux"></i>
+                    <span>Linux <small id="linux-rec" style="display:none;" class="rec-tag">Recommended</small></span>
+                </a>
+            </div>
+
+            <div class="info">
+                <p id="os-detected"><i class="fas fa-search" style="margin-right: 8px;"></i>Определение операционной системы...</p>
+            </div>
         </div>
 
-        <div class="info">
-            <p id="os-detected">Выберите платформу</p>
+        <div id="step-2">
+            <i class="fas fa-check-circle done-icon"></i>
+            <h2 class="success-title">Загрузка началась!</h2>
+            <p style="color: var(--text-muted); margin-top: 15px; line-height: 1.5;">Установите скачанный файл и погрузитесь в игру.</p>
+            
+            <div id="linux-tip">
+                <i class="fas fa-terminal" style="color: var(--primary); margin-right: 8px;"></i>
+                Для установки запустите в терминале:<br>
+                <code>bash setup.sh</code>
+            </div>
+            
+            <button onclick="location.reload()" class="back-btn">
+                <i class="fas fa-arrow-left" style="margin-right: 8px;"></i> Вернуться
+            </button>
         </div>
     </div>
 
-    <div id="step-2" style="display: none;">
-        <i class="fas fa-check-circle done-icon"></i>
-        <h2 style="color: var(--success); margin: 0;">Загрузка началась!</h2>
-        <p style="color: #888;">Установите скачанный файл и заходите в игру.</p>
-        <button onclick="location.reload()" style="background:none; border:1px solid #333; color:#555; padding:8px 15px; border-radius:10px; cursor:pointer; margin-top:20px;">Вернуться</button>
-    </div>
-</div>
+    <script>
+        // Детектор ОС
+        const platform = window.navigator.userAgent.toLowerCase();
+        const winBtn = document.getElementById('win-btn');
+        const linuxBtn = document.getElementById('linux-btn');
+        const winRec = document.getElementById('win-rec');
+        const linuxRec = document.getElementById('linux-rec');
+        const osDetected = document.getElementById('os-detected');
 
-<script>
-    const platform = window.navigator.userAgent.toLowerCase();
-    const winBtn = document.getElementById('win-btn');
-    const linuxBtn = document.getElementById('linux-btn');
-    const winRec = document.getElementById('win-rec');
-    const linuxRec = document.getElementById('linux-rec');
+        // Авто-подсветка "Рекомендуем"
+        if (platform.indexOf("win") !== -1) {
+            winBtn.classList.add('recommended');
+            winRec.style.display = 'inline';
+            osDetected.innerHTML = '<i class="fab fa-windows" style="margin-right:8px; color:#fff;"></i>Обнаружена Windows. Выберите версию.';
+        } else if (platform.indexOf("linux") !== -1) {
+            linuxBtn.classList.add('recommended');
+            linuxRec.style.display = 'inline';
+            osDetected.innerHTML = '<i class="fab fa-linux" style="margin-right:8px; color:#fff;"></i>Обнаружена Linux. Выберите версию.';
+        } else {
+            osDetected.innerText = "Пожалуйста, выберите вашу платформу.";
+        }
 
-    if (platform.indexOf("win") !== -1) {
-        winBtn.classList.add('recommended');
-        winRec.style.display = 'inline';
-    } else if (platform.indexOf("linux") !== -1) {
-        linuxBtn.classList.add('recommended');
-        linuxRec.style.display = 'inline';
-    }
-
-    function showSuccess() {
-        setTimeout(() => {
-            document.getElementById('step-1').style.display = "none";
-            document.getElementById('step-2').style.display = "block";
-        }, 300);
-    }
-</script>
-
+        // Логика переключения экранов
+        function showSuccess(os) {
+            // Небольшая задержка перед переключением для эффекта нажатия
+            setTimeout(() => {
+                document.getElementById('step-1').style.display = "none";
+                document.getElementById('step-2').style.display = "block";
+                
+                // Показываем подсказку для Linux, если выбрана Linux
+                if (os === 'linux') {
+                    document.getElementById('linux-tip').style.display = 'block';
+                }
+            }, 350);
+        }
+    </script>
 </body> 
 </html>
